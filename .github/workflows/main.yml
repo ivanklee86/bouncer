@@ -38,9 +38,6 @@ jobs:
     - name: Run tests
       run: |
         task test-ci
-    - name: Run tests
-      run: |
-        task test-ci
     - name: Publish Unit Test Results
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()

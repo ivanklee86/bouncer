@@ -6,8 +6,8 @@ vars:
   BINARY: keyfob
   BUILD_DIR: bin
   TEST_REPORT: tests.xml
-  COVERAGE_RAW: cover.out
-  COVERAGE_REPORT: cover.html
+  COVERAGE_RAW: coverage.out
+  COVERAGE_REPORT: coverage.html
   VERSION: "Make"
 
 tasks:
