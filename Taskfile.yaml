@@ -6,8 +6,8 @@ vars:
   BINARY: keyfob
   BUILD_DIR: bin
   TEST_REPORT: tests.xml
-  COVERAGE_RAW: cover.out
-  COVERAGE_REPORT: cover.html
+  COVERAGE_RAW: coverage.out
+  COVERAGE_REPORT: coverage.html
   VERSION: "Make"
 
 tasks:
@@ -21,8 +21,14 @@ tasks:
   install:
     desc: Installs Golang dependencies and testing tools.
     cmds:
-      - go mod tidy
       - go get ./...
+
+  install-ci:
+    desc: Install packages and CI/CD tools.
+    cmds:
+      - task: install
+      - go install github.com/jstemmer/go-junit-report/v2@latest
+      - go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
   
   build:
     desc: Builds bouncer binary.

@@ -1,0 +1,58 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - "*"
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Install Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: 1.19.3
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - uses: actions/cache@v2
+      with:
+        path: |
+          ~/go/pkg/mod
+          ~/.cache/go-build
+          ~/Library/Caches/go-build
+          %LocalAppData%\go-build
+        key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+        restore-keys: |
+          ${{ runner.os }}-go-
+    - name: Install Task
+      uses: arduino/setup-task@v1
+    - name: Install all dependencies
+      run: |
+        task install-ci
+    - name: Lint
+      run: |
+        task lint
+    - name: Run tests
+      run: |
+        task test-ci
+    - name: Publish Unit Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v2
+      if: always()
+      with:
+        junit_files: "report.xml"
+    - name: Generate lcov coverage report.
+      uses: jandelgado/gcov2lcov-action@v1.0.5
+    - name: Coveralls 
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        path-to-lcov: coverage.lcov
+    - name: Save artifacts.
+      uses: actions/upload-artifact@v2
+      if: always()
+      with:
+        name: Coverage report.
+        path: ./coverage.html
