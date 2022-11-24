@@ -11,11 +11,18 @@ vars:
   VERSION: "Make"
 
 tasks:
+  default:
+    cmds:
+      - task: install
+      - task: fmt
+      - task: lint
+      - task: test
+
   install:
     desc: Installs Golang dependencies and testing tools.
     cmds:
+      - go mod tidy
       - go get ./...
-      - go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
   
   build:
     desc: Builds bouncer binary.
@@ -32,3 +39,14 @@ tasks:
     desc: Lints Golang code.
     cmds:
       - golangci-lint run
+
+  test:
+    desc: Run Golang tests.
+    cmds:
+      - go test -v ./... 2>&1
+  
+  test-ci:
+    desc: Run Golang tests and generate coverage report.
+    cmds:
+      - go test --coverprofile {{.COVERAGE_RAW}} -v ./... 2>&1  | go-junit-report > report.xml
+      - go tool cover -html={{.COVERAGE_RAW}} -o {{.COVERAGE_REPORT}}

@@ -2,7 +2,7 @@ package bouncer
 
 import (
 	"bytes"
-	"io/ioutil"
+	"io"
 	"testing"
 
 	"github.com/acarl005/stripansi"
@@ -21,7 +21,7 @@ func TestOutputs(t *testing.T) {
 	t.Run("outputs string", func(t *testing.T) {
 		kf.Output(testPhrase)
 
-		out, err := ioutil.ReadAll(b)
+		out, err := io.ReadAll(b)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -32,7 +32,7 @@ func TestOutputs(t *testing.T) {
 	t.Run("outputs header", func(t *testing.T) {
 		kf.OutputHeading(testPhrase)
 
-		out, err := ioutil.ReadAll(b)
+		out, err := io.ReadAll(b)
 		if err != nil {
 			t.Fatal(err)
 		}

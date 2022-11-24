@@ -3,7 +3,7 @@ package main
 import (
 	"bytes"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -20,7 +20,7 @@ func TestRoot(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	out, err := ioutil.ReadAll(b)
+	out, err := io.ReadAll(b)
 	if err != nil {
 		t.Fatal(err)
 	}
