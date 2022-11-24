@@ -21,8 +21,13 @@ tasks:
   install:
     desc: Installs Golang dependencies and testing tools.
     cmds:
-      - go mod tidy
       - go get ./...
+
+  install-ci:
+    desc: Install packages and CI/CD tools.
+    cmds:
+      - task: install
+      - go install github.com/jstemmer/go-junit-report/v2@latest
   
   build:
     desc: Builds bouncer binary.
